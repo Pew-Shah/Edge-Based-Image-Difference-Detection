@@ -10,14 +10,17 @@ This repository contains a Python-based application designed to perform image fo
 - **Forensics Analysis**: Computes and displays the count of edges detected in both images.
 - **Graphical Representation**: Displays a bar graph comparing the edge counts of the original and morphed images.
 
-Input:
+## Input:
 
 
+![ggg](https://github.com/user-attachments/assets/b607e0b6-a0e7-4c7b-b881-b52d7263a52c)
 
 
-Output: 
+## Output: 
 
 
+![rgrfg](https://github.com/user-attachments/assets/5fe48168-2376-4816-8b87-c013da633941)
 
 
+![ayrgedg](https://github.com/user-attachments/assets/340f2476-15cf-441a-abea-1494b6f1af97)
 
