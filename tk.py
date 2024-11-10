@@ -80,7 +80,7 @@ def compute_difference():
         diff_img = cv2.absdiff(edges_original, edges_morphed)
         
         overlay_img = original_img.copy() 
-        overlay_img[diff_img > 0] = [255, 0, 0]
+        overlay_img[diff_img > 0] = [0, 255, 0]
         
         img_display = ImageTk.PhotoImage(Image.fromarray(cv2.cvtColor(overlay_img, cv2.COLOR_BGR2RGB)))
         if panelC is None:
@@ -117,27 +117,52 @@ def analyze_and_display_graph():
         
         canvas = FigureCanvasTkAgg(fig, master=root)
         canvas.draw()
-        canvas.get_tk_widget().grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        canvas.get_tk_widget().grid(row=2, column=0, padx=10, pady=10)
+
+def analyze_and_display_pigraph():
+    global edges_original, edges_morphed, lsb_variance_original, lsb_variance_morphed
+
+    if edges_original is not None and edges_morphed is not None:
+        original_edge_count = count_edges(edges_original)
+        morphed_edge_count = count_edges(edges_morphed)
+
+        fig, ax = plt.subplots(figsize=(6, 4), facecolor='#008B8B')
+        categories = ['Original image edges', 'Morphed image edges']
+        edge_counts = [original_edge_count, morphed_edge_count]
+        
+        # Create a pie chart
+        ax.pie(edge_counts, labels=categories, autopct='%1.1f%%', startangle=140, colors=['#4CAF50', '#FFC107'])
+        ax.set_title('Image Forensics Analysis', fontsize=12, fontweight='bold')
+        
+        fig.patch.set_facecolor('#f0f0f0')
+        
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().grid(row=2, column=1, padx=10, pady=10)
+
+
+def analyze_images():
+    analyze_and_display_graph()  # Display the bar graph
+    analyze_and_display_pigraph()
 
 root = Tk()
 root.title("Image Forensics Tool")
-root.configure(bg='#f0f0f0')
+root.configure(bg='black')
 
 panelA = None  # original image
 panelB = None  # morphed image
 panelC = None  # difference image
 
-btn_original = Button(root, text="Select Original Image", command=select_original_image, bg='#008000', fg='white', font=("Arial", 11, "bold"), padx=10, pady=10)
+btn_original = Button(root, text="Select Original Image", command=select_original_image, bg='white', fg='black', font=("Arial", 11, "bold"), padx=10, pady=10, relief=RAISED, borderwidth=2)
 btn_original.grid(row=0, column=0, padx=10, pady=10)
 
-btn_morphed = Button(root, text="Select Morphed Image", command=select_morphed_image, bg='#DC143C', fg='white', font=("Arial", 11, "bold"), padx=10, pady=10)
+btn_morphed = Button(root, text="Select Morphed Image", command=select_morphed_image, bg='white', fg='black', font=("Arial", 11, "bold"), padx=10, pady=10, relief=RAISED, borderwidth=2)
 btn_morphed.grid(row=0, column=1, padx=10, pady=10)
 
-btn_compute = Button(root, text="Compute Difference", command=compute_difference, bg='#607D8B', fg='white', font=("Arial", 11, "bold"), padx=10, pady=10)
+btn_compute = Button(root, text="Compute Difference", command=compute_difference, bg='white', fg='black', font=("Arial", 11, "bold"), padx=10, pady=10, relief=RAISED, borderwidth=2)
 btn_compute.grid(row=0, column=2, padx=10, pady=10)
 
-btn_analyze = Button(root, text="Analyze Images", command=analyze_and_display_graph, bg='#9C27B0', fg='white', font=("Arial", 11, "bold"), padx=10, pady=10)
+btn_analyze = Button(root, text="Analyze Images", command=analyze_images, bg='white', fg='black', font=("Arial", 11, "bold"), padx=10, pady=10, relief=RAISED, borderwidth=2)
 btn_analyze.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
 
-root.configure(bg="#002D62")
 root.mainloop()
